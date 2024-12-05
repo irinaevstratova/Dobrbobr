@@ -1,0 +1,86 @@
+openapi: "3.0.0"
+info:
+  title: ДЗ20
+  version: "1.0.0"
+  description: API для взаимодействия с заявками
+
+servers:
+  - url: 'rabbitmq://localhost'
+
+paths:
+  /volunteerApplications:
+    post:
+      summary: Созздание заявки
+      operationId: formApplication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  description: Идентификатор заявки
+                organizationId:
+                  type: string
+                  description: Идентификатор организации
+                taskDescription:
+                  type: string
+                  description: Описание функционала волонтеров
+                maxVolunteers:
+                  type: integer
+                  description: Макисмальное количество волонтеров на выполнение заявки
+                timeSlotbeg:
+                  type: string
+                  description: Время начала волонтерства по заявке
+                timeSlotend:
+                  type: string
+                  description:  Время окнончания волонтерства по заявке
+      responses:
+        '200':
+          description: Заявка успешно создана
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Заявка успешно создана"
+
+  /volunteerResponses:
+    post:
+      summary: Отклик на заявку волонтером
+      operationId: receiveResponse
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                volunteerId:
+                  type: string
+                  description: Идентификатор волонтера
+                applicationId:
+                  type: string
+                  description: Идентификатор заявки
+                status:
+                  type: string
+                  enum:
+                    - accepted
+                    - waiting_list
+                  description: Статус отклика (волонтер записался или встал в очередь ожидания)
+      responses:
+        '200':
+          description: Response received successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Response received successfully."
+
