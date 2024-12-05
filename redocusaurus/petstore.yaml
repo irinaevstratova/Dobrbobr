@@ -1,0 +1,473 @@
+openapi: 3.0.0
+info:
+  title: Социальная сеть
+  description: Описание фрагмента АПИ социальной сети в рамках домашнего задания
+  version: 1.0.0
+  contact:
+    name: Ирина Евстратова
+tags:
+  - name: Posts
+    description: Посты
+  - name: Comments
+    description: Комментарии
+  - name: Reactions
+    description: Реакции
+paths:
+  /posts/{postId}:
+    get:
+      summary: Информация о посте
+      description: limit и offset для пагинации по комментариям
+      tags:
+        - Posts
+      parameters:
+        - $ref: '#/components/parameters/PostId'
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/Offset'
+      responses:
+        '200':
+          description: Пост найден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+        '404':
+          description: Пост не найден
+  /posts/{postId}/comments:
+    get:
+      summary: Комментарии конкретного поста
+      tags:
+        - Comments
+      parameters:
+        - $ref: '#/components/parameters/PostId'
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/Offset'
+      responses:
+        '200':
+          description: Пост найден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comments'
+        '400':
+          description: Некорректный запрос
+        '404':
+          description: Пост не найден
+    post:
+      summary: Отправка комментария к посту
+      tags:
+        - Comments
+      security:
+        - BearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/PostId'
+      requestBody:
+        description: Тело комментария
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Comment'
+      responses:
+        '200':
+          description: Успешно опубликовано
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comment'
+        '400':
+          description: Некорректный запрос
+        '401':
+          description: Необходимо пройти аутентификацию
+        '403':
+          description: Нет прав оставлять комментарий
+        '404':
+          description: Пост не найден
+    put:
+      summary: Редактирование комментария к посту
+      tags:
+        - Comments
+      security:
+        - BearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/PostId'
+      requestBody:
+        description: The type of reaction to add or remove
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Comment'
+      responses:
+        '200':
+          description: Успешно отредактировано
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comment'
+        '400':
+          description: Некорректный запрос
+        '401':
+          description: Необходимо пройти аутентификацию
+        '403':
+          description: Нет прав оставлять комментарий
+        '404':
+          description: Пост не найден
+  /comments/{commentId}:
+    get:
+      summary: Получение конкретного комментария
+      tags:
+        - Comments
+      parameters:
+        - $ref: '#/components/parameters/CommentId'
+      responses:
+        '200':
+          description: Комментарий найден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comment'
+        '400':
+          description: Некорректный запрос
+        '404':
+          description: Комментарий не найден
+    put:
+      summary: Редактирование комментария
+      tags:
+        - Comments
+      security:
+        - BearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/CommentId'
+      requestBody:
+        description: The type of reaction to add or remove
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Comment'
+      responses:
+        '200':
+          description: Успешно отредактировано
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comment'
+        '400':
+          description: Некорректный запрос
+        '401':
+          description: Необходимо пройти аутентификацию
+        '403':
+          description: Нет прав оставлять комментарий
+        '404':
+          description: Пост не найден
+  /posts/{postId}/reactions:
+    get:
+      summary: Реакции конкретного поста
+      tags:
+        - Reactions
+      parameters:
+        - $ref: '#/components/parameters/PostId'
+      responses:
+        '200':
+          description: Пост найден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Reactions'
+        '400':
+          description: Некорректный запрос
+        '404':
+          description: Пост не найден
+    put:
+      summary: Отправка реакции к посту
+      tags:
+        - Reactions
+      security:
+        - BearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/PostId'
+      requestBody:
+        description: Тело комментария
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Reaction'
+      responses:
+        '200':
+          description: Успешно опубликовано. Новое состояние реакций
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Reactions'
+        '400':
+          description: Некорректный запрос
+        '401':
+          description: Необходимо пройти аутентификацию
+        '403':
+          description: Нет прав оставлять реакцию
+        '404':
+          description: Пост не найден
+    delete:
+      summary: Удаление реакции к посту
+      tags:
+        - Reactions
+      security:
+        - BearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/PostId'
+        - $ref: '#/components/parameters/ReactionType'
+      responses:
+        '200':
+          description: Реакция удалена. Новое состояние реакций
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Reactions'
+        '400':
+          description: Некорректный запрос
+        '401':
+          description: Необходимо пройти аутентификацию
+        '403':
+          description: Нет прав оставлять реакцию
+        '404':
+          description: Пост не найден
+  /posts/{postId}/likes:
+    get:
+      summary: Лайки конкретного поста
+      tags:
+        - Likes
+      parameters:
+        - $ref: '#/components/parameters/PostId'
+      responses:
+        '200':
+          description: Пост найден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Likes'
+        '400':
+          description: Некорректный запрос
+        '404':
+          description: Пост не найден
+    put:
+      summary: Отправка лайка к посту
+      tags:
+        - Likes
+      security:
+        - BearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/PostId'
+      responses:
+        '200':
+          description: Успешно опубликовано. Новое состояние лайков
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Likes'
+        '400':
+          description: Некорректный запрос
+        '401':
+          description: Необходимо пройти аутентификацию
+        '403':
+          description: Нет прав оставлять реакцию
+        '404':
+          description: Пост не найден
+    delete:
+      summary: Удаление лайка с поста
+      tags:
+        - Likes
+      security:
+        - BearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/PostId'
+      responses:
+        '200':
+          description: Реакция удалена. Новое состояние лайков
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Likes'
+        '400':
+          description: Некорректный запрос
+        '401':
+          description: Необходимо пройти аутентификацию
+        '403':
+          description: Нет прав оставлять реакцию
+        '404':
+          description: Пост не найден
+  /comments/{commentId}/likes:
+    get:
+      summary: Лайки конкретного коммента
+      tags:
+        - Likes
+      parameters:
+        - $ref: '#/components/parameters/CommentId'
+      responses:
+        '200':
+          description: Пост найден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Likes'
+        '400':
+          description: Некорректный запрос
+        '404':
+          description: Пост не найден
+    put:
+      summary: Отправка лайка к комментарию
+      tags:
+        - Likes
+      security:
+        - BearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/CommentId'
+      responses:
+        '200':
+          description: Успешно опубликовано. Новое состояние лайков
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Likes'
+        '400':
+          description: Некорректный запрос
+        '401':
+          description: Необходимо пройти аутентификацию
+        '403':
+          description: Нет прав оставлять реакцию
+        '404':
+          description: Пост не найден
+    delete:
+      summary: Удаление лайка с комментария
+      tags:
+        - Likes
+      security:
+        - BearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/CommentId'
+      responses:
+        '200':
+          description: Лайка удалена. Новое состояние лайков
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Likes'
+        '400':
+          description: Некорректный запрос
+        '401':
+          description: Необходимо пройти аутентификацию
+        '403':
+          description: Нет прав оставлять реакцию
+        '404':
+          description: Пост не найден
+components:
+  schemas:
+    Likes:
+      type: integer
+      description: Число лайков
+      example: 42
+    ReactionType:
+      type: string
+      enum:
+        - like
+        - dislike
+        - sofa
+        - rubl
+        - stonks
+        - rocket
+      description: Тип реакции
+      example: sofa
+    Reaction:
+      type: object
+      properties:
+        count:
+          type: integer
+          description: Количество реакций данного типа
+          example: 30
+        reaction:
+          $ref: '#/components/schemas/ReactionType'
+      required:
+        - type
+    Reactions:
+      description: Список реакций
+      type: array
+      items:
+        $ref: '#/components/schemas/Reaction'
+    Postable:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ИД комментария
+        author_id:
+          type: integer
+          description: ИД Автора комментария
+        text:
+          type: string
+          description: Текст комментария
+        date:
+          type: string
+          format: '1970-01-01T12:00:00'
+          description: Дата-время публикации комментария
+        likes:
+          $ref: '#/components/schemas/Likes'
+        reactions:
+          $ref: '#/components/schemas/Reactions'
+      required:
+        - text
+    Comment:
+      $ref: '#/components/schemas/Postable'
+    Comments:
+      type: array
+      items:
+        $ref: '#/components/schemas/Postable'
+    Post:
+      allOf:
+        - $ref: '#/components/schemas/Postable'
+        - type: object
+          properties:
+            title:
+              type: string
+              example: Большой большой пост
+            comments:
+              $ref: '#/components/schemas/Comments'
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  parameters:
+    PostId:
+      name: postId
+      in: path
+      required: true
+      description: ID of the post
+      schema:
+        type: string
+    Limit:
+      name: limit
+      in: query
+      description: Показывть по...
+      schema:
+        type: integer
+      example: 50
+    Offset:
+      name: offset
+      in: query
+      description: Показывть c...
+      schema:
+        type: integer
+      example: 50
+    CommentId:
+      name: commentId
+      in: path
+      required: true
+      description: ID of the comment
+      schema:
+        type: string
+    ReactionType:
+      name: reaction_type
+      in: query
+      required: true
+      schema:
+        $ref: '#/components/schemas/ReactionType'
