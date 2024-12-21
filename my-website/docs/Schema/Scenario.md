@@ -45,6 +45,8 @@ usecase "Добавить описание деятельности" as UC14
 
 usecase "Добавить почту" as UC15
 
+usecase "Добавить аватар" as UC16
+
 }
 
 v --> UC2
@@ -53,7 +55,11 @@ f --> UC11
 
 UC7 --> UC10: include
 
+UC7 --> UC16: include
+
 UC12 --> UC10: include
+
+UC12 --> UC16: include
 
 UC11 --> UC8: include
 
@@ -71,19 +77,20 @@ UC7 --> UC3: include
 
 UC12 --> UC5: include
 
-UC5 --> UC6: extend
+UC5 <.. UC6: extend
 
-UC12 <-- UC13: extend
+UC12 <..- UC13: extend
 
 UC12 --> UC14: include
 
 UC12 --> UC15: include
 
-UC7 <-- UC15: extend
+UC7 <.. UC15: extend
 
 f <|-- m
 
 @enduml
+
 
 ```
 
@@ -226,3 +233,7 @@ end
 # Создание и отклик на заявки (BPMN)
 
 ![alt text](Draft.png)
+
+# Формирование ленты заявок (DMN)
+
+![alt text](dmn.png)
