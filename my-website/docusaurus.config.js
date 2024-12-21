@@ -53,11 +53,8 @@ const config = {
           {
             id: 'specification',
             spec: 'api_specs/openapi.yaml',
-          },
-          {
-            id: 'specification_asyncapi',
-            spec: 'api_specs/asyncapi.yaml',
-          },
+          }
+          
         ],
         theme: {
           primaryColor: '#1890ff', // Customize Redocusaurus theme color

@@ -40,15 +40,13 @@ hide_table_of_contents: true
 
   - **Пример**:
 
-    ```Plain Text
-
-{
-  "user_id": "volunteer123",
-  "application_id": "application_id123",
-  "timestamp": "2024-12-08T12:30:00"
-}
-```
-
+    ```json
+    {
+      "user_id": "volunteer123",
+      "application_id": "application_id123",
+      "timestamp": "2024-12-08T12:30:00"
+    }
+    ```
 
 2. **Очередь 2 - Освободившиеся места и уведомления** volunteer_notification_exchange
 
@@ -70,15 +68,14 @@ hide_table_of_contents: true
 
   - **Пример**:
 
-    ```Plain Text
-
-{
-  "application_id": "application_id123",
-  "user_id": "volunteer789",
-  "status": "место доступно",
-  "timestamp": "2024-12-08T14:00:00"
-}
-```
+    ```json
+        {
+            "application_id": "application_id123",
+            "user_id": "volunteer789",
+            "status": "место доступно",
+            "timestamp": "2024-12-08T14:00:00"
+        }
+    ```
 
 
 ### Описание работы с очередями:
@@ -97,21 +94,20 @@ hide_table_of_contents: true
 
   Формат сообщения, отправляемого фондом для создания заявки:
 
-  ```Plain Text
-
-{
-  "action": "create_volunteer_application",
-  "data": {
-    "fund_id": 123,
-    "volunteer_application_id": 456,
-    "available_spots": 5,
-    "application_description": "Помощь в уборке территории парка",
-    "application_name": "Помощь в уборке территории",
-    "application_date": "2024-12-09",
-    "application_starttime": "14:00:00",
-    "application_endtime": "18:00:00"
-  }
-}
+  ```json
+    {
+    "action": "create_volunteer_application",
+    "data": {
+        "fund_id": 123,
+        "volunteer_application_id": 456,
+        "available_spots": 5,
+        "application_description": "Помощь в уборке территории парка",
+        "application_name": "Помощь в уборке территории",
+        "application_date": "2024-12-09",
+        "application_starttime": "14:00:00",
+        "application_endtime": "18:00:00"
+        }
+    }
 ```
 
 
@@ -119,16 +115,15 @@ hide_table_of_contents: true
 
   Формат сообщения, отправляемого волонтером для отклика на заявку:
 
-  ```Plain Text
-
-{
-  "action": "volunteer_response",
-  "data": {
-    "volunteer_id": 789,
-    "volunteer_application_id": 456,
-    "status": "accepted"
-  }
-}
+```json
+    {
+        "action": "volunteer_response",
+        "data": {
+            "volunteer_id": 789,
+            "volunteer_application_id": 456,
+            "status": "accepted"
+        }
+    }
 ```
 
 
@@ -136,7 +131,7 @@ hide_table_of_contents: true
 
   Формат сообщения, когда волонтер встает в очередь ожидания (если нет свободных мест):
 
-  ```Plain Text
+```json
 
 {
   "action": "volunteer_waiting",
@@ -153,7 +148,7 @@ hide_table_of_contents: true
 
   Формат сообщения, отправляемого системой, когда освободилось место для волонтера:
 
-  ```Plain Text
+```json
 
 {
   "action": "notify_free_spot",

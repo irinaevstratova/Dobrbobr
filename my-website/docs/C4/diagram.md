@@ -9,7 +9,7 @@ sidebar_position: 1
 ``` plantuml
 @startuml
 !define C4_COMPONENT
-!includeurl [https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml](https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml)
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
 
 ' Legend for the diagram
 
@@ -40,7 +40,6 @@ Component(backend, "Бэкенд", "Spring Boot", "Обеспечивает би
 
 ComponentDb(main_database, "База данных", "PostgreSQL", "Хранение данных о волонтерах, фондах и заявках.")
 ComponentDb(auth_database, "База данных авторизации", "PostgreSQL", "Хранение логинов и паролей пользователей.")
-
 
 }
 
@@ -82,7 +81,7 @@ Rel(backend, main_database, "Чтение, запись и удаление да
 ``` plantuml
 @startuml
 !define C4_COMPONENT
-!includeurl [https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml](https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml)
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
 
 ' Legend for the diagram
 
@@ -122,11 +121,8 @@ Component(service_notifications, "Сервис уведомлений", "Spring 
 
 Component(service_edit_db, "Сервис редактирования БД", "Spring Boot", "Позволяет редактировать БД: настраивать права доступа, удалять фонды.")
 
-```Plain Text
 ComponentDb(main_database, "База данных", "PostgreSQL", "Хранение данных о волонтерах, фондах и заявках.")
 ComponentDb(auth_database, "База данных авторизации", "PostgreSQL", "Хранение логинов и паролей пользователей.")
-```
-
 
 }
 
